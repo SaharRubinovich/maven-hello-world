@@ -106,4 +106,9 @@ jobs:
         git config --global user.name ${{ secrets.GIT_USER }}
         git add .
         git commit -m "update version"
-        git push ${{ secrets.REPO }}
+        
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
