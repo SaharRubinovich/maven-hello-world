@@ -47,6 +47,7 @@ jobs:
         echo "pom.xml at" $POMPATH "will be bumped from" $OLD_VERSION "to" $NEW_VERSION
         mvn -q versions:set -DnewVersion="${NEW_VERSION}" --file $POMPATH/pom.xml
         echo ::set-output name=jar_version::${NEW_VERSION}
+        export NEW_VERSION=NEW_VERSION
     
     - name: Compile
       run: mvn -B compile --file my-app/pom.xml
