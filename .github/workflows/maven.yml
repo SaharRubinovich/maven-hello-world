@@ -41,7 +41,7 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         cache-dependency-path: ./my-app
-        token: ${{ secrets.TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
     
     # - name: Bump Version
     #   id: bump 
@@ -107,7 +107,7 @@ jobs:
         git config --global user.name ${{ secrets.GIT_USER }}
         git add .
         git commit -m "update version"
-        git push https://${{ secrets.GIT_USER }}:${{ secrets.GIT_USER }}@github.com/SaharRubinovich/maven-hello-world.git
+        git push https://${{ secrets.GIT_USER }}:${{ secrets.TOKEN }}@github.com/SaharRubinovich/maven-hello-world.git
         
     # - name: Push changes
     #   uses: ad-m/github-push-action@master
