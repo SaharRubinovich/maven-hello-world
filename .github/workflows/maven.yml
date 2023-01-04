@@ -91,7 +91,7 @@ jobs:
       id: build
       working-directory: ./my-app
       run: |
-        docker build -t saharrubinovich/hello-githhub:${{steps.bump.outputs.jar_version}} .
+        docker build --build-arg VER=${{steps.bump.outputs.jar_version}} -t saharrubinovich/hello-githhub:${{steps.bump.outputs.jar_version}} .
     
     - name: Login to DockerHub
       uses: docker/login-action@v1
@@ -107,7 +107,7 @@ jobs:
       run: |
         git config --global user.email ${{ secrets.GIT_EMAIL }}
         git config --global user.name ${{ secrets.GIT_USER }}
-        git add .
+        git add ./my-app/pom.xml
         git commit -m "update version"
         git push https://${{ secrets.GIT_USER }}:${{ secrets.TOKEN }}@github.com/SaharRubinovich/maven-hello-world.git
         
