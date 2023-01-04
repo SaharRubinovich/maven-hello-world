@@ -27,9 +27,9 @@ jobs:
     env:
       working-directory: ./my-app
  
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
+    #defaults:
+      #run:
+        #working-directory: ${{ env.working-directory }}
     
     steps:
     - uses: actions/checkout@v2
