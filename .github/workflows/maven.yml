@@ -75,4 +75,4 @@ jobs:
     
     - name: docker push
       run: |
-        docker push saharrubinovich/hello-githhub:{$NEW_VERSION}
+        docker push saharrubinovich/hello-githhub:$NEW_VERSION
