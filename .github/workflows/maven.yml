@@ -39,7 +39,7 @@ jobs:
       uses: nnichols/maven-version-bump-action@v3
       with:
         github-token: ${{ secrets.TOKEN }}
-        pom-path: ./my-app/
+        pom-path: /my-app
     
     - name: get version number
       id: version
