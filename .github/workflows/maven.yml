@@ -35,11 +35,12 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
     
     - name: Bump Version
-      id: bump
+      id: bump 
       uses: nnichols/maven-version-bump-action@v3
       with:
         github-token: ${{ secrets.TOKEN }}
         pom-path: ./my-app
+        working-directory: ./my-app
     
     - name: get version number
       id: version
