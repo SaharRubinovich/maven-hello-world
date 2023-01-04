@@ -28,10 +28,13 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: clean
+      working-directory: ./my-app
       run: mvn -B clean --file pom.xml
     - name: Compile Maven
+      working-directory: ./my-app
       run: mvn -B compile --file pom.xml
     - name: Build with Maven
+      working-directory: ./my-app
       run: mvn -B package --file pom.xml
       
       
