@@ -47,6 +47,7 @@ jobs:
         echo "pom.xml at" $POMPATH "will be bumped from" $OLD_VERSION "to" $NEW_VERSION
         mvn -q versions:set -DnewVersion="${NEW_VERSION}" --file $POMPATH/pom.xml
         echo ::set-output name=jar_version::${NEW_VERSION}
+    
     - name: Compile
       run: mvn -B compile --file my-app/pom.xml
 
@@ -59,3 +60,18 @@ jobs:
         name: jar-artifact
         path: ${{ github.workspace }}/my-app/target/*.jar
         retention-days: 1
+    
+    - name: build image
+      working-directory: ./my-app
+      run: |
+        docker build -t saharrubinovich/hello-githhub:{$NEW_VERSION}  
+    
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PASS }}
+    
+    - name: docker push
+      run: |
+        docker push saharrubinovich/hello-githhub:{$NEW_VERSION}
