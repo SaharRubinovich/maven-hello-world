@@ -22,8 +22,15 @@ jobs:
       contents: read
       packages: write
     outputs:
-      jar_version: ${{ steps.version.outputs.jar_version }}
-
+      jar_version: ${{steps.bump.outputs.version}}
+ 
+    env:
+      working-directory: ./my-app
+ 
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+    
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 8
@@ -39,15 +46,15 @@ jobs:
       uses: nnichols/maven-version-bump-action@v3
       with:
         github-token: ${{ secrets.TOKEN }}
-        pom-path: ./my-app
-        working-directory: ./my-app
+        # pom-path: ./my-app
+        # working-directory: ./my-app
     
-    - name: get version number
-      id: version
-      run: |
-        POMPATH=my-app
-        NEW_VERSION=$(cd $POMPATH && mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-        echo ::set-output name=jar_version::${NEW_VERSION}
+    # - name: get version number
+    #   id: version
+    #   run: |
+    #     POMPATH=my-app
+    #     NEW_VERSION=$(cd $POMPATH && mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+    #     echo ::set-output name=jar_version::${NEW_VERSION}
     # - name: Bump jar version
     #   id: bump
     #   run: |
@@ -64,10 +71,10 @@ jobs:
     #     export NEW_VERSION=NEW_VERSION
     
     - name: Compile
-      run: mvn -B compile --file my-app/pom.xml
+      run: mvn -B compile --file pom.xml
 
     - name: Build a package
-      run: mvn -B package --file my-app/pom.xml
+      run: mvn -B package --file pom.xml
 
     - name: Temporarily save jar artifact
       uses: actions/upload-artifact@v2
@@ -80,7 +87,7 @@ jobs:
       id: build
       working-directory: ./my-app
       run: |
-        docker build -t saharrubinovich/hello-githhub:${{ steps.version.outputs.jar_version }} .
+        docker build -t saharrubinovich/hello-githhub:${{steps.bump.outputs.version}} .
     
     - name: Login to DockerHub
       uses: docker/login-action@v1
@@ -90,4 +97,4 @@ jobs:
     
     - name: docker push
       run: |
-        docker push saharrubinovich/hello-githhub:${{ steps.version.outputs.jar_version }}
+        docker push saharrubinovich/hello-githhub:${{steps.bump.outputs.version}}
