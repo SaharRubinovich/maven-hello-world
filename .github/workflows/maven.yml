@@ -65,7 +65,7 @@ jobs:
     - name: build image
       working-directory: ./my-app
       run: |
-        docker build -t saharrubinovich/hello-githhub:$NEW_VERSION
+        docker build -t saharrubinovich/hello-githhub:${{ steps.bump.outputs.jar_version }} .
     
     - name: Login to DockerHub
       uses: docker/login-action@v1
@@ -75,4 +75,4 @@ jobs:
     
     - name: docker push
       run: |
-        docker push saharrubinovich/hello-githhub:$NEW_VERSION
+        docker push saharrubinovich/hello-githhub:${{ steps.bump.outputs.jar_version }}
